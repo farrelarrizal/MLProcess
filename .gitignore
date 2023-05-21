@@ -8,5 +8,5 @@
 /dataSources.local.xml
 .idea
 config.yaml
-code/training.py
+training.py
 
