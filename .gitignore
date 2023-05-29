@@ -9,4 +9,4 @@
 .idea
 config.yaml
 training.py
-
+/__pycache__
