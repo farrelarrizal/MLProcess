@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi import Request
 import pickle
+import uvicorn
 
 app = FastAPI()
 
@@ -33,7 +34,11 @@ def load_model():
 @app.get('/check')
 async def check():
     model = load_model()
-    return model
+    if model['status'] == 204:
+        messages = 'Model is not ready to use' + model['messages']
+    else:
+        messages = 'Model is ready to use'
+    return messages
 
 @app.post("/predict")
 async def predict(data: Request):
@@ -45,7 +50,6 @@ async def predict(data: Request):
     sepal_width = data['sepal_width']
     petal_length = data['petal_length']
     petal_width = data['petal_width']
-
 
     model = load_model()
     label = ['Iris-setosa', 'Iris-versicolor', 'Iris-virginica']
@@ -64,3 +68,5 @@ async def predict(data: Request):
         }
     return response
     
+if __name__ == "__main__":
+    uvicorn.run("iris-api:app", host = "0.0.0.0", port = 8000)
